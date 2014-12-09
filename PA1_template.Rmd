@@ -23,13 +23,22 @@ print(median)
 ```
 ## What is the average daily activity pattern?
 stepsInterval<-aggregate(steps~interval,data=dataset,mean,na.rm=TRUE)
-plot(data$interval, dailySteps$steps, type="l")
+plot(dataset$interval, dataset$steps, type="l")
 
 
 ## Imputing missing values
-
-
-
+sum(is.na(dataset$steps))
+interval_to_steps<-function(interval){
+    stepsInterval[stepsInterval$interval==interval,]$steps
+}
+fixedNAs = dataset
+count = 0
+for(i in 1:nrow(fixedNAs)){
+    if(is.na(fixedNAs[i,]$steps)){
+        fixedNAs[i,]$steps<-interval_to_steps(fixedNAs[i,]$interval)
+        count=count+1
+    }
+}
 ## Are there differences in activity patterns between weekdays and weekends?
 
 This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
