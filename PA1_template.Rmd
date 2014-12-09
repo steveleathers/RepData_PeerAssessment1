@@ -13,8 +13,8 @@ dailySteps<-aggregate(steps~date,data=dataset,sum,na.rm=TRUE)
 ```
 ## What is mean total number of steps taken per day?
 ```{r}
-mean <- mean(dailySteps$steps, na.rm = TRUE)
-median <- median(dailySteps$steps, na.rm=TRUE)
+mean_raw <- mean(dailySteps$steps, na.rm = TRUE)
+median_raw <- median(dailySteps$steps, na.rm=TRUE)
 hist(dailySteps$steps)
 ```
 The mean total number of steps taken per day is
@@ -27,7 +27,12 @@ plot(dataset$interval, dataset$steps, type="l")
 
 
 ## Imputing missing values
-sum(is.na(dataset$steps))
+
+There are ```r sum(is.na(dataset$steps))``` missing values.
+
+To fix this, I've replaced all missing values with the average for the interval:
+
+```{r}
 interval_to_steps<-function(interval){
     stepsInterval[stepsInterval$interval==interval,]$steps
 }
@@ -39,6 +44,11 @@ for(i in 1:nrow(fixedNAs)){
         count=count+1
     }
 }
+```
+mean_clean <- mean(fixedNAs$steps)
+median_clean <- median(fixedNAs$steps)
+hist(fixedNAs$steps)
+
 ## Are there differences in activity patterns between weekdays and weekends?
 
 This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
