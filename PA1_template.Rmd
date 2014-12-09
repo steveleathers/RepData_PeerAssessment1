@@ -1,21 +1,29 @@
 ---
-title: "Reproducible Research: Peer Assessment 1"
-output: 
-  html_document:
-    keep_md: true
+title: "PA1_template"
+author: "Steve Leathers"
+date: "December 4, 2014"
+output: html_document
 ---
 
-
 ## Loading and preprocessing the data
+```{r}
 
-
-
+dataset <- read.csv("activity.csv", stringsAsFactors = FALSE)
+dailySteps<-aggregate(steps~date,data=dataset,sum,na.rm=TRUE)
+```
 ## What is mean total number of steps taken per day?
-
-
-
+```{r}
+mean <- mean(dailySteps$steps, na.rm = TRUE)
+median <- median(dailySteps$steps, na.rm=TRUE)
+hist(dailySteps$steps)
+```
+The mean total number of steps taken per day is
+```{r}
+print(median)
+```
 ## What is the average daily activity pattern?
-
+stepsInterval<-aggregate(steps~interval,data=dataset,mean,na.rm=TRUE)
+plot(data$interval, dailySteps$steps, type="l")
 
 
 ## Imputing missing values
@@ -23,3 +31,19 @@ output:
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r}
+summary(cars)
+```
+
+You can also embed plots, for example:
+
+```{r, echo=FALSE}
+plot(cars)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
