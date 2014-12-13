@@ -5,10 +5,15 @@ date: "December 4, 2014"
 output: html_document
 ---
 
+
 ## Loading and preprocessing the data
 
 1. Load the data (i.e. read.csv())
 ```{r}
+## numbers >= 10^5 will be denoted in scientific notation,
+## and rounded to 2 digits
+options(scipen = 2, digits = 2)
+
 dataset <- read.csv("activity.csv", stringsAsFactors = FALSE)
 ```
 2. Process/transform the data (if necessary) into a format suitable for your analysis
@@ -26,8 +31,10 @@ hist(dailySteps$steps)
 mean_raw <- mean(dailySteps$steps, na.rm = TRUE)
 median_raw <- median(dailySteps$steps, na.rm=TRUE)
 ```
-Mean total number of steps per day: ```r print(mean_raw)```
-Median total number of steps per day: ```r print(median_raw)```
+Mean total number of steps per day: `r mean_raw`
+
+Median total number of steps per day: `r median_raw`
+
 ## What is the average daily activity pattern?
 
 1. Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
@@ -39,6 +46,8 @@ plot(aggDataset$steps~aggDataset$interval, type="l")
 ```{r}
 aggDataset[which.max(aggDataset$steps), ]$interval
 ```
+
+
 ## Imputing missing values
 
 There are `r sum(is.na(dataset$steps))` missing values.
@@ -74,8 +83,12 @@ mean_clean <- mean(aggDataset2$steps)
 median_clean <- median(aggDataset2$steps)
 ```
 
-These new clean mean is `r print(mean_clean)` steps per day.
-And the clean median is `r print(median_clean)` steps per day.
+These new clean mean is `r mean_clean` steps per day.
+
+And the clean median is `r median_clean` steps per day.
+
+While the median has stayed the same (which makes sense, since we removed the NA values in the first calculation), the median has slightly changed. This is based largely on where the NA values fell.
+
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
@@ -108,3 +121,5 @@ And finally, let's construct the plot with lattice, making sure to set the aspec
 ```{r}
 xyplot(steps~interval|factor(DayOrEnd),data=finalDataset,aspect=1/2,type="l")
 ```
+
+As you can see, there is a slight difference between average number of steps taken on weekdays and weekends: on weekdays, there's usually a spike in the mid-morning, while on weekends, the number of steps more closely conforms to a bell curve.
